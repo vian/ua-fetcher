@@ -1,5 +1,5 @@
 # Latest Chrome User-Agent Getter for Node.
-_Using Pushover notifications._
+## Using Pushover notifications.
 
 To be runned as a standalone UNIX process.
 
@@ -9,12 +9,12 @@ Add someplace like /etc/cron.daily:
 #!/bin/sh
 
 if [ ! -x /usr/bin/node ]; then
-    /usr/bin/logger -t ua-fetcher "ALERT Node.js executable is not found [$EXITVALUE]"
+    /usr/bin/logger -t ua-fetcher "ALERT Node.js executable is not found [-1]"
     exit -1
 fi
 
 if [ ! -r $UA_FETCHER_HOMEDIR/main.js ]; then
-    /usr/bin/logger -t ua-fetcher "ALERT source file does not exist [$EXITVALUE]"
+    /usr/bin/logger -t ua-fetcher "ALERT source file does not exist [-1]"
     exit -1
 fi
 
