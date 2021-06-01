@@ -3,25 +3,14 @@
 
 To be runned as a standalone UNIX process.
 
-Add someplace like /etc/cron.daily:
+Add command to run the following script someplace like `sudo crontab -u <USER> -e`:
 
 ```sh
-#!/bin/sh
+#!/bin/bash
+export PUSHOVER_USER=<VALUE>
+export PUSHOVER_TOKEN=<VALUE>
+export UA_GETTER_PROXY="socks5://<user>:<pwd>@<host>:<port>"
 
-if [ ! -x /usr/bin/node ]; then
-    /usr/bin/logger -t ua-fetcher "ALERT Node.js executable is not found [-1]"
-    exit -1
-fi
-
-if [ ! -r $UA_FETCHER_HOMEDIR/main.js ]; then
-    /usr/bin/logger -t ua-fetcher "ALERT source file does not exist [-1]"
-    exit -1
-fi
-
-/usr/bin/node $UA_FETCHER_HOMEDIR/main.js > $UA_FETCHER_HOMEDIR/latest-chrome-ua.txt
-EXITVALUE=$?
-if [ $EXITVALUE != 0 ]; then
-    /usr/bin/logger -t ua-fetcher "ALERT exited abnormally with [$EXITVALUE]"
-fi
-exit $EXITVALUE
+cd "$(dirname "$(realpath "$0")")"
+node main.js > latest-chrome-ua.txt
 ```

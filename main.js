@@ -29,9 +29,11 @@ const sendErrorNotification = (err) => {
 (async () => {
     try {
         const { statusCode, data } =
-            await
-            curly
-            .get('https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome');
+            await curly
+            .get('https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome',
+                {
+                    proxy: process.env('UA_GETTER_PROXY')
+                });
         if (statusCode !== 200) {
             throw new Error(`HTTP error: ${statusCode}.`);
         }
