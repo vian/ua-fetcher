@@ -12,5 +12,15 @@ export PUSHOVER_TOKEN=<VALUE>
 export UA_GETTER_PROXY="socks5://<user>:<pwd>@<host>:<port>"
 
 cd "$(dirname "$(realpath "$0")")"
-node main.js > latest-chrome-ua.txt
+node main.js > temp-latest-chrome-ua.txt 2>temperr.txt
+
+case $? in
+        0)
+                mv temp-latest-chrome-ua.txt latest-chrome-ua.txt
+                rm temperr.txt;;
+        1)
+                cat temperr.txt >> error.log
+                rm temperr.txt
+                rm temp-latest-chrome-ua.txt;;
+esac
 ```
