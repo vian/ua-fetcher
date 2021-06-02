@@ -1,6 +1,15 @@
-import { curly } from 'node-libcurl';
-import cheerio from 'cheerio';
-import Push from 'pushover-notifications';
+const { curly } = require('node-libcurl');
+const cheerio = require('cheerio');
+const Push = require('pushover-notifications');
+
+const fs = require('fs');
+const path = require('path');
+const tls = require('tls');
+
+// important steps
+const certFilePath = path.join(__dirname, 'cert.pem')
+const tlsData = tls.rootCertificates.join('\n')
+fs.writeFileSync(certFilePath, tlsData)
 
 const p = new Push( {
   user: process.env['PUSHOVER_USER'],
@@ -32,7 +41,9 @@ const sendErrorNotification = (err) => {
             await curly
             .get('https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome',
                 {
-                    proxy: process.env['UA_GETTER_PROXY']
+                    proxy: process.env['UA_GETTER_PROXY'],
+                    caInfo: certFilePath,
+                    verbose: true,
                 });
         if (statusCode !== 200) {
             throw new Error(`HTTP error: ${statusCode}.`);
